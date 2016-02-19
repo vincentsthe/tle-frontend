@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8" />
+    <title>Reacd</title>
+    <script src="js/react.min.js"></script>
+    <script src="js/react-dom.min.js"></script>
+    <script src="js/browser.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+* {
+  padding: 0;
+  margin: 0;
+}
+body { padding-top: 70px; }
+/*.flex {
+    display: flex;
+}
+.flex > div {
+    flex: 1 auto;
+}*/
+.card h4 {
+    margin-top: 0;
+}
+.label {
+    vertical-align: calc(1px);
+}
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">TLE</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Link</a></li>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Link</a></li>
+            </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>    
+    </header>
+    <main id="main" class="container"></main>
+
+    <script src="https://cdn.jsdelivr.net/g/jquery@2.2.0,bootstrap@3.3.6"></script>
+    <script type="text/babel">
+var Icon = React.createClass({
+    render: function() {
+        var classStr = "glyphicon glyphicon-" + this.props.name;
+        return <span className = {classStr} />;
+    }
+});
+var ItemUsername = React.createClass({
+  render: function() {
+    return <div className = "col-md-3 col-sm-6">
+      <Icon name="user" />
+      &nbsp;{this.props.username}
+    </div>
+  }
+});
+var ItemLanguage = React.createClass({
+  render: function() {
+    return <div className = "col-md-3 col-sm-6">
+      <Icon name="comment" />
+      &nbsp;{this.props.language}
+    </div>
+  }
+});
+var ItemTime = React.createClass({
+  render: function() {
+    var time = new Date(this.props.time),
+        formattedTime = time.getUTCHours() + ":" + time.getUTCMinutes() + ":" + time.getUTCSeconds();
+    return <div className = "col-md-3 col-sm-6">
+      <Icon name="time" />
+      &nbsp;{formattedTime}
+    </div>
+  }
+});
+var ItemVerdict = React.createClass({
+  render: function() {
+    var verdict = this.props.verdict,
+        label = "default",
+        labelMapping = {
+          "accepted": "success",
+          "wrong answer": "danger",
+          "time limit exceeded": "danger",
+          "memory limit exceeded": "danger",
+          "run time error": "danger"
+        }, scoreFormatted = "";
+    if (verdict.toLowerCase() in labelMapping) {
+        label = labelMapping[verdict.toLowerCase()];
+    }
+    label = "label label-" + label;
+    
+    if (this.props.problemType === "IOI") {
+        scoreFormatted = " (" + this.props.score + ")";
+    }
+    return <div className = "col-md-3 col-sm-6">
+        <Icon name = "certificate" />
+        &nbsp;<div className = {label}>{verdict}{scoreFormatted}</div>
+    </div>
+  }
+});
+var Item = React.createClass({
+  render: function() {
+    return  <div className = "card panel panel-default">
+        <div className = "panel-body">
+            <h4>
+                <a href={this.props.data.problem_url}>{this.props.data.problem_name}</a>
+            </h4>
+            <div className = "flex">
+                <ItemTime time={this.props.data.submission_time} />
+                <ItemUsername username={this.props.data.submission_user} />
+                <ItemLanguage language={this.props.data.submission_language} />
+                <ItemVerdict
+                  verdict = {this.props.data.submission_verdict}
+                  score = {this.props.data.submission_score}
+                  problemType = {this.props.data.problem_type}
+                />
+            </div>
+            <div className = "col-md-12">
+                <Icon name="tags" />
+                &nbsp;<div className = "label label-default">{this.props.data.problem_type}</div>
+            </div>
+        </div>
+    </div>
+  }
+});
+var ItemContainer = React.createClass({
+  render: function() {
+    var items = [];
+    for (var datum of this.props.data) {
+        items.push(
+            <Item data = {datum} />
+        );
+    }
+    return <div> {items} </div>
+  }
+});
+/*
+- problem_id ?
+- problem_name
+- problem_type (ICPC or IOI)
+- problem_url
+- submission_time
+- submission_user
+- submission_language
+- submission_verdict
+- submission_score (0 if ICPC)
+*/
+var Main = React.createClass({
+  getInitialState: function() {
+    return {data: [{
+        problem_id: 217,
+        problem_name: "Robot Penjaga",
+        problem_type: "IOI",
+        problem_url: "https://training.ia-toki.org/training/curriculums/2/courses/9/sessions/49/problems/217/",
+        submission_time: "2016-02-07T09:32:42Z",
+        submission_user: "vincentsthe",
+        submission_language: "Pascal",
+        submission_verdict: "Accepted",
+        submission_score: 100
+    }, {
+        problem_id: 217,
+        problem_name: "Robot Penjaga",
+        problem_type: "IOI",
+        problem_url: "https://training.ia-toki.org/training/curriculums/2/courses/9/sessions/49/problems/217/",
+        submission_time: "2016-02-07T09:41:42Z",
+        submission_user: "Kenrick95",
+        submission_language: "Pascal",
+        submission_verdict: "Memory Limit Exceeded",
+        submission_score: 99
+    }, {
+        problem_id: 17,
+        problem_name: "Kawal Pemilu",
+        problem_type: "ICPC",
+        problem_url: "https://training.ia-toki.org/problemsets/9/problems/17/",
+        submission_time: "2016-02-05T23:41:42Z",
+        submission_user: "Lorem ipsum dolor sit amet",
+        submission_language: "Python 3",
+        submission_verdict: "Time Limit Exceeded",
+        submission_score: 0
+    }] };
+  },
+  componentDidMount: function() {
+    document.addEventListener("keypress", this.handleKeydown, false);
+  },
+  componentDidUpdate: function() {
+    localStorage.reactState = JSON.stringify(this.state);
+  },
+  render: function() {
+    return (<div>
+        <ItemContainer
+          id="itemContainer"
+          data={this.state.data}
+        />
+    </div>);
+  }
+});
+ReactDOM.render(
+  <Main/>,
+  document.getElementById('main')
+);
+
+    </script>
+  </body>
+</html>
