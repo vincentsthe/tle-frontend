@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="UTF-8" />
-    <title>Reacd</title>
+    <title>TLE</title>
     <script src="js/react.min.js"></script>
     <script src="js/react-dom.min.js"></script>
     <script src="js/browser.min.js"></script>
@@ -14,17 +14,17 @@
   margin: 0;
 }
 body { padding-top: 70px; }
-/*.flex {
-    display: flex;
-}
-.flex > div {
-    flex: 1 auto;
-}*/
 .card h4 {
     margin-top: 0;
 }
 .label {
     vertical-align: calc(1px);
+}
+.panel-body {
+    padding: 15px 10px;
+}
+.panel {
+    margin-bottom: 15px;
 }
     </style>
   </head>
@@ -69,7 +69,7 @@ var Icon = React.createClass({
 });
 var ItemUsername = React.createClass({
   render: function() {
-    return <div className = "col-md-3 col-sm-6">
+    return <div className = "col-md-4 col-sm-6">
       <Icon name="user" />
       &nbsp;{this.props.username}
     </div>
@@ -77,7 +77,7 @@ var ItemUsername = React.createClass({
 });
 var ItemLanguage = React.createClass({
   render: function() {
-    return <div className = "col-md-3 col-sm-6">
+    return <div className = "col-md-2 col-sm-6">
       <Icon name="comment" />
       &nbsp;{this.props.language}
     </div>
@@ -87,7 +87,7 @@ var ItemTime = React.createClass({
   render: function() {
     var time = new Date(this.props.time),
         formattedTime = time.getUTCHours() + ":" + time.getUTCMinutes() + ":" + time.getUTCSeconds();
-    return <div className = "col-md-3 col-sm-6">
+    return <div className = "col-md-2 col-sm-6">
       <Icon name="time" />
       &nbsp;{formattedTime}
     </div>
@@ -112,7 +112,7 @@ var ItemVerdict = React.createClass({
     if (this.props.problemType === "IOI") {
         scoreFormatted = " (" + this.props.score + ")";
     }
-    return <div className = "col-md-3 col-sm-6">
+    return <div className = "col-md-4 col-sm-6">
         <Icon name = "certificate" />
         &nbsp;<div className = {label}>{verdict}{scoreFormatted}</div>
     </div>
@@ -134,10 +134,6 @@ var Item = React.createClass({
                   score = {this.props.data.submission_score}
                   problemType = {this.props.data.problem_type}
                 />
-            </div>
-            <div className = "col-md-12">
-                <Icon name="tags" />
-                &nbsp;<div className = "label label-default">{this.props.data.problem_type}</div>
             </div>
         </div>
     </div>
