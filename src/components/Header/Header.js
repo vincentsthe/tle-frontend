@@ -1,14 +1,7 @@
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
-import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { appName } from '../../config';
 
@@ -17,31 +10,57 @@ import { Input, Navbar } from 'react-bootstrap';
 // import Navigation from '../Navigation';
 import Location from '../../core/Location';
 import Link from '../Link';
+import * as HeaderActions from '../../actions/headerAction';
 
-function Header({ userName }) {
-  return (
-    <Navbar className={s.root} staticTop>
-      <Navbar.Header>
-        <Navbar.Brand className={s.brand}>
-          <Link to="/">
-            {appName}
-          </Link>
-        </Navbar.Brand>
-        <Navbar.Toggle />
-      </Navbar.Header>
-      <Navbar.Collapse>
-        <Navbar.Form pullLeft>
-          <form onSubmit={() => Location.push(`/user/${userName}`)}>
-            <Input className={s.search} type="text" placeholder="Search" />
-          </form>
-        </Navbar.Form>
-      </Navbar.Collapse>
-    </Navbar>
-  );
+class Header extends Component {
+  constructor() {
+    super();
+    this.handleUserNameSubmit = this.handleUserNameSubmit.bind(this);
+  }
+
+  handleUserNameSubmit() {
+    const { userName } = this.props;
+    Location.push(`/user/${userName}`);
+  }
+
+  render() {
+    const { userName, setUserName } = this.props;
+    return (
+      <Navbar className={s.root} staticTop>
+        <Navbar.Header>
+          <Navbar.Brand className={s.brand}>
+            <Link to="/">
+              {appName}
+            </Link>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Navbar.Form pullLeft>
+            <form onSubmit={this.handleUserNameSubmit}>
+              <Input className={s.search} onChange={(e) => setUserName(e.target.value)} value={userName} type="text" placeholder="Search user..." />
+            </form>
+          </Navbar.Form>
+        </Navbar.Collapse>
+      </Navbar>
+    );
+  }
+}
+
+function mapStateToProps(state) {
+  const header = state.header;
+  return {
+    userName: header.userName,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(HeaderActions, dispatch);
 }
 
 Header.propTypes = {
   userName: PropTypes.string,
+  setUserName: PropTypes.func.isRequired,
 };
 
-export default withStyles(Header, s);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(Header, s));
