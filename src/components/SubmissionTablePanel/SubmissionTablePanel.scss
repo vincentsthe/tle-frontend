@@ -1,0 +1,23 @@
+@import '../variables.scss';
+
+.root {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: $max-content-width;
+  padding: 0 0 40px;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.limitButtons {
+  margin-top: 0;
+  margin-bottom: 10px;
+  float: right;
+}
