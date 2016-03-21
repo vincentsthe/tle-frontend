@@ -1,0 +1,6 @@
+{
+  "name": "LiveSubmission",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LiveSubmission.js"
+}

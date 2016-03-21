@@ -12,6 +12,7 @@ import emptyFunction from 'fbjs/lib/emptyFunction';
 import s from './App.scss';
 import Header from '../Header';
 import Footer from '../Footer';
+import LiveSubmission from '../../decorators/LiveSubmission';
 
 class App extends Component {
 
@@ -56,6 +57,7 @@ class App extends Component {
     return !this.props.error ? (
       <div>
         <Header />
+        <LiveSubmission />
         {this.props.children}
         <Footer />
       </div>
