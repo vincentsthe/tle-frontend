@@ -15,6 +15,10 @@ export const action = async (state) => {
   const { rank } = await rankResponse.json();
   userData.rank = rank;
 
-  state.context.onSetTitle(`${userData.name} (${userName}) | TLE`);
+  if (typeof userData.name !== 'undefined') {
+    state.context.onSetTitle(`${userData.name} (${userName}) | TLE`);
+  } else {
+    state.context.onSetTitle('User name not found | TLE');
+  }
   return <UserPage userData={userData} />;
 };

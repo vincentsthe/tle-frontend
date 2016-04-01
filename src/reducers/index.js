@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import header from './header';
-import submission from './submission';
 import liveSubmission from './liveSubmission';
+import userSubmission from './userSubmission';
 
 const tleApp = combineReducers({
   header,
-  submission,
   liveSubmission,
+  userSubmission,
 });
 
 export default tleApp;

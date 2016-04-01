@@ -18,9 +18,16 @@ class Header extends Component {
     this.handleUserNameSubmit = this.handleUserNameSubmit.bind(this);
   }
 
-  handleUserNameSubmit() {
+  handleUserNameSubmit(event) {
     const { userName } = this.props;
-    Location.push(`/user/${userName}`);
+
+    event.preventDefault();
+
+    if (userName !== '') {
+      Location.push(`/user/${userName}`);
+    } else {
+      Location.push('/');
+    }
   }
 
   render() {

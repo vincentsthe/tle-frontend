@@ -1,15 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './SubmissionTable.scss';
-import * as SubmissionTableActions from '../../actions/submissionTableAction';
 
 import { Table } from 'react-bootstrap';
 
 class SubmissionTable extends Component {
   componentDidMount() {
-    const { isPolling, getSubmissions, apiParams } = this.props;
+    const { getSubmissions, apiParams } = this.props;
+    const { isPolling } = this.props.submission;
     getSubmissions(apiParams);
 
     if (isPolling) {
@@ -20,10 +18,13 @@ class SubmissionTable extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const shouldUpdate = this.props.apiParams.limit !== nextProps.apiParams.limit || this.props.isPolling !== nextProps.isPolling;
+    const shouldUpdate = this.props.apiParams.problemId !== nextProps.apiParams.problemId ||
+                         this.props.apiParams.userId !== nextProps.apiParams.userId ||
+                         this.props.apiParams.limit !== nextProps.apiParams.limit ||
+                         this.props.submission.isPolling !== nextProps.submission.isPolling;
     if (shouldUpdate) {
       nextProps.getSubmissions(nextProps.apiParams);
-      if (nextProps.isPolling) {
+      if (nextProps.submission.isPolling) {
         clearInterval(this.refreshInterval);
         this.refreshInterval = setInterval(() => {
           nextProps.getSubmissions(nextProps.apiParams);
@@ -52,19 +53,19 @@ class SubmissionTable extends Component {
   }
 
   displayData() {
-    const { data, isPending } = this.props;
+    const { data, isPending } = this.props.submission;
     if (data.length > 0) {
       let key = 0;
       return (
-        data.map(submission => {
+        data.map(row => {
           key++;
           return (
             <tr key={key}>
-              <td>{submission.name} ({submission.username})</td>
-              <td>{submission.problemSlug}</td>
-              <td className={(submission.verdictName === 'Accepted' ? s.greenText : s.redText)}>{submission.verdictName}</td>
-              <td>{submission.score}</td>
-              <td>{this.formatTime(submission.submitTime)}</td>
+              <td>{row.name} ({row.username})</td>
+              <td>{row.problemSlug}</td>
+              <td className={(row.verdictName === 'Accepted' ? s.greenText : s.redText)}>{row.verdictName}</td>
+              <td>{row.score}</td>
+              <td>{this.formatTime(row.submitTime)}</td>
             </tr>
           );
         })
@@ -104,39 +105,27 @@ class SubmissionTable extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { submission } = state;
-  return {
-    data: submission.data,
-    isPending: submission.isPending,
-    isFulfilled: submission.isFulfilled,
-    error: submission.error,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(SubmissionTableActions, dispatch);
-}
-
 SubmissionTable.propTypes = {
   apiParams: PropTypes.shape({
     limit: PropTypes.int,
     userId: PropTypes.int,
     problemId: PropTypes.int,
   }),
-  data: PropTypes.arrayOf(PropTypes.shape({
-    problemSlug: PropTypes.string,
-    name: PropTypes.string,
-    username: PropTypes.string,
-    verdictName: PropTypes.string,
-    score: PropTypes.int,
-    submitTime: PropTypes.int,
-  })).isRequired,
-  isPolling: PropTypes.bool,
-  isPending: PropTypes.bool,
-  isFulfilled: PropTypes.bool,
-  error: PropTypes.any,
+  submission: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({
+      problemSlug: PropTypes.string,
+      name: PropTypes.string,
+      username: PropTypes.string,
+      verdictName: PropTypes.string,
+      score: PropTypes.int,
+      submitTime: PropTypes.int,
+    })).isRequired,
+    isPolling: PropTypes.bool,
+    isPending: PropTypes.bool,
+    isFulfilled: PropTypes.bool,
+    error: PropTypes.any,
+  }),
   getSubmissions: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(SubmissionTable, s));
+export default withStyles(SubmissionTable, s);
