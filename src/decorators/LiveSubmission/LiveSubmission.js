@@ -5,10 +5,15 @@ import { bindActionCreators } from 'redux';
 import SubmissionTablePanel from '../../components/SubmissionTablePanel';
 import * as LiveSubmissionAction from '../../actions/liveSubmissionAction';
 
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import s from './LiveSubmission.scss';
+
 function LiveSubmission({ className, submission, getSubmissions, setSubmissionLimit, setSubmissionShown }) {
   const submissionLimits = [5, 10, 25, 50, 100];
   return (
-    <SubmissionTablePanel className={className} title="Live Submissions" visibilityToggle userId={undefined} limits={submissionLimits} submission={submission} getSubmissions={getSubmissions} setSubmissionLimit={setSubmissionLimit} setSubmissionShown={setSubmissionShown} />
+    <div className={s.root}>
+        <SubmissionTablePanel className={className} title="Live Submissions" visibilityToggle userId={undefined} limits={submissionLimits} submission={submission} getSubmissions={getSubmissions} setSubmissionLimit={setSubmissionLimit} setSubmissionShown={setSubmissionShown} />
+    </div>
   );
 }
 
@@ -54,4 +59,4 @@ LiveSubmission.propTypes = {
   setSubmissionShown: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LiveSubmission);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(LiveSubmission, s));

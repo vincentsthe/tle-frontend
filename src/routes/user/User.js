@@ -22,16 +22,18 @@ function User({ submission, getSubmissions, setSubmissionLimit, userData }) {
           <div className={s.stat}>Total Submissions: {totalSubmission}</div>
           <div className={s.stat}>Accepted Problems: {acceptedProblem}</div>
         </div>
-        <SubmissionTablePanel
-          title="Last Submissions"
-          isPolling={false}
-          submission={submission}
-          limits={submissionLimits}
-          getSubmissions={getSubmissions}
-          setSubmissionLimit={setSubmissionLimit}
-          setSubmissionShown={null}
-          userId={id}
-        />
+        <div className={s.submissionTable}>
+            <SubmissionTablePanel
+              title="Last Submissions"
+              isPolling={false}
+              submission={submission}
+              limits={submissionLimits}
+              getSubmissions={getSubmissions}
+              setSubmissionLimit={setSubmissionLimit}
+              setSubmissionShown={null}
+              userId={id}
+            />
+        </div>
       </div>
     </div>
   ) : (

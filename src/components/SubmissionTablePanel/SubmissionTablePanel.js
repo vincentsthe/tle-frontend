@@ -10,7 +10,7 @@ import RadioButtons from '../../components/RadioButtons';
 
 function SubmissionTablePanel({ className, userId, title, visibilityToggle, limits, submission, getSubmissions, setSubmissionLimit, setSubmissionShown }) {
   const visibilityToggleButton = (visibilityToggle) ? (
-    <Button bsStyle={(submission.isShown ? 'default' : 'primary')} onClick={() => setSubmissionShown(!submission.isShown)} block>
+    <Button bsSize="large" bsStyle={(submission.isShown ? 'default' : 'primary')} onClick={() => setSubmissionShown(!submission.isShown)} block>
       {(submission.isShown ? 'Hide' : 'Show')} {title}
     </Button>
   ) : '';

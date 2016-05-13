@@ -44,8 +44,9 @@ class Header extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Navbar.Form pullLeft>
-            <form onSubmit={this.handleUserNameSubmit}>
+            <form className={s.searchForm} onSubmit={this.handleUserNameSubmit}>
               <Input className={s.search} onChange={(e) => setUserName(e.target.value)} value={userName} type="text" placeholder="Search user..." />
+              <span className={s.searchIcon}><i className="fa fa-search"></i></span>
             </form>
           </Navbar.Form>
         </Navbar.Collapse>

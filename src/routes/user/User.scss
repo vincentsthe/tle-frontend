@@ -11,6 +11,10 @@
   padding: 0 0 40px;
 }
 
+.title {
+    font-size: 1.2em;
+}
+
 .stat {
   display: inline-block;
 
@@ -18,4 +22,16 @@
     padding: 0 10px;
     content: '|';
   }
+}
+
+.submissionTable {
+    [class="panel-body"] {
+        padding: 15px 0;
+    }
+
+    h2 {
+        font-size: 1.8em;
+        margin-top: 5px !important;
+        margin-bottom: 0 !important;
+    }
 }

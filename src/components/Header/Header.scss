@@ -9,11 +9,12 @@
 
 @import '../variables.scss';
 
-$brand-color: #61dafb;
+$navbar-background: #03A9F4;
 
 .root {
-  background: #373277;
-  color: #fff;
+  background: $navbar-background;
+  color: #FFFFFF;
+  border: 0;
 }
 
 .container {
@@ -23,11 +24,29 @@ $brand-color: #61dafb;
 }
 
 .brand {
-  color: color($brand-color lightness(+10%)) !important;
+  font-family: "Montserrat";
+  letter-spacing: -0.15em;
+  color: #FFFFFF !important;
   text-decoration: none;
-  font-size: 1.75em; /* ~28px */
+  font-size: 2.5em;
+}
+
+.searchForm {
+    color: #000000;
 }
 
 .search {
-  width: 100%;
+  background-color: rgba(0,0,0,0.1) !important;
+
+  &:focus {
+      background-color: #FFFFFF !important;
+  }
+
+  @media (min-width: $screen-sm-min) {
+      width: 500px !important;
+  }
+}
+
+.searchIcon {
+    margin-left: -1.85em;
 }

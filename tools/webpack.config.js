@@ -81,6 +81,8 @@ const config = {
           'postcss-loader?parser=postcss-scss',
         ],
       }, {
+        test: /\.css$/, loader: 'style-loader!css-loader',
+      }, {
         test: /\.json$/,
         loader: 'json-loader',
       }, {
@@ -157,7 +159,7 @@ const clientConfig = extend(true, {}, config, {
 // -----------------------------------------------------------------------------
 
 const serverConfig = extend(true, {}, config, {
-  entry: './src/server.js',
+  entry: ['./src/server.js'],
   output: {
     path: './build',
     filename: 'server.js',
