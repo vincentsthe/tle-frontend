@@ -5,7 +5,7 @@ import clone from 'clone';
 const defaultState = {
   recommendation: {
     data: [],
-    limit: 25,
+    limit: 10,
     isPending: true,
     isFulfilled: false,
     error: false,

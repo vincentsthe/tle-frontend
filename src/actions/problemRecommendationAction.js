@@ -17,7 +17,7 @@ export function getRecommendations({ userId, limit }) {
 }
 
 export const SET_PROBLEM_RECOMMENDATION_LIMIT = 'SET_PROBLEM_RECOMMENDATION_LIMIT';
-export function setRecommendationLimit(limit = 25) {
+export function setRecommendationLimit(limit = 10) {
   return {
     type: SET_PROBLEM_RECOMMENDATION_LIMIT,
     payload: limit,

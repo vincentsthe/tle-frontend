@@ -1,0 +1,6 @@
+{
+  "name": "RankTable",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./RankTable.js"
+}

@@ -1,0 +1,27 @@
+@import '../variables.scss';
+
+.root {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: $max-content-width;
+  padding: 0 0;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.aboveButtons, .belowButtons {
+  margin-top: 0;
+  margin-bottom: 10px;
+  float: right;
+}
+
+.belowButtons {
+  margin-right: 15px;
+}

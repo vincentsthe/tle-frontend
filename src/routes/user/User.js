@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { Tabs, Tab } from 'react-bootstrap';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './User.scss';
 
@@ -11,15 +12,21 @@ import * as SubmissionAction from '../../actions/userSubmissionAction';
 import ProblemRecommendationTablePanel from '../../components/ProblemRecommendationTablePanel';
 import * as ProblemRecommendationAction from '../../actions/problemRecommendationAction';
 
+import RankTablePanel from '../../components/RankTablePanel';
+import * as RankAction from '../../actions/rankAction';
+
 function User({
   submission, getSubmissions, setSubmissionLimit,
   recommendation, getRecommendations, setRecommendationLimit,
+  rank, getRanks, setRankAbove, setRankBelow,
   userData }) {
 
-  const { id, name, acceptedSubmission, totalSubmission, acceptedProblem } = userData;
+  const { name, acceptedSubmission, totalSubmission, acceptedProblem } = userData;
+  const userId = userData.id;
   const userName = userData.username;
   const submissionLimits = [5, 10, 25, 50, 100];
-  const recommendationLimits = [25, 50, 100];
+  const recommendationLimits = [5, 10, 25, 50, 100];
+  const rankLimits = [5, 10, 25, 50, 100];
 
   return (typeof name !== 'undefined') ? (
     <div className={s.root}>
@@ -30,28 +37,84 @@ function User({
           <div className={s.stat}>Total Submissions: {totalSubmission}</div>
           <div className={s.stat}>Accepted Problems: {acceptedProblem}</div>
         </div>
-        <div className={s.submissionTable}>
-          <SubmissionTablePanel
-            title="Last Submissions"
-            isPolling={false}
-            submission={submission}
-            limits={submissionLimits}
-            getSubmissions={getSubmissions}
-            setSubmissionLimit={setSubmissionLimit}
-            setSubmissionShown={null}
-            userId={id}
-          />
-        </div>
-        <div className={s.problemRecommendationTable}>
-          <ProblemRecommendationTablePanel
-            title="Next Problems to Solve"
-            recommendation={recommendation}
-            limits={recommendationLimits}
-            getRecommendations={getRecommendations}
-            setRecommendationLimit={setRecommendationLimit}
-            userId={id}
-          />
-        </div>
+        <Tabs className={s.tabs} defaultActiveKey={1}>
+          <Tab eventKey={1} title="Last Submissions">
+            <div className={s.submissionTable}>
+              <SubmissionTablePanel
+                title="Last Submissions"
+                isPolling={false}
+                submission={submission}
+                limits={submissionLimits}
+                getSubmissions={getSubmissions}
+                setSubmissionLimit={setSubmissionLimit}
+                setSubmissionShown={null}
+                userId={userId}
+              />
+            </div>
+          </Tab>
+          <Tab eventKey={2} title="Next Problems to Solve">
+            <div className={s.problemRecommendationTable}>
+              <ProblemRecommendationTablePanel
+                title="Next Problems to Solve"
+                recommendation={recommendation}
+                limits={recommendationLimits}
+                getRecommendations={getRecommendations}
+                setRecommendationLimit={setRecommendationLimit}
+                userId={userId}
+              />
+            </div>
+          </Tab>
+          <Tab eventKey={3} title="User Rank">
+            <div className={s.rankTable}>
+              <RankTablePanel
+                title="User Rank"
+                rank={rank}
+                limits={rankLimits}
+                getRanks={getRanks}
+                setRankAbove={setRankAbove}
+                setRankBelow={setRankBelow}
+                userId={userId}
+                userRank={userData.rank}
+              />
+            </div>
+          </Tab>
+          <Tab eventKey={4} title="Show All Info">
+            <div className={s.submissionTable}>
+              <SubmissionTablePanel
+                title="Last Submissions"
+                isPolling={false}
+                submission={submission}
+                limits={submissionLimits}
+                getSubmissions={getSubmissions}
+                setSubmissionLimit={setSubmissionLimit}
+                setSubmissionShown={null}
+                userId={userId}
+              />
+            </div>
+            <div className={s.problemRecommendationTable}>
+              <ProblemRecommendationTablePanel
+                title="Next Problems to Solve"
+                recommendation={recommendation}
+                limits={recommendationLimits}
+                getRecommendations={getRecommendations}
+                setRecommendationLimit={setRecommendationLimit}
+                userId={userId}
+              />
+            </div>
+            <div className={s.rankTable}>
+              <RankTablePanel
+                title="User Rank"
+                rank={rank}
+                limits={rankLimits}
+                getRanks={getRanks}
+                setRankAbove={setRankAbove}
+                setRankBelow={setRankBelow}
+                userId={userId}
+                userRank={userData.rank}
+              />
+            </div>
+          </Tab>
+        </Tabs>
       </div>
     </div>
   ) : (
@@ -67,6 +130,7 @@ function User({
 function mapStateToProps(state) {
   const { submission } = state.userSubmission;
   const { recommendation } = state.problemRecommendation;
+  const { rank } = state.rank;
   return {
     submission: {
       data: submission.data,
@@ -83,12 +147,20 @@ function mapStateToProps(state) {
       isPending: recommendation.isPending,
       isFulfilled: recommendation.isFulfilled,
       error: recommendation.error,
-    }
+    },
+    rank: {
+      data: rank.data,
+      above: rank.above,
+      below: rank.below,
+      isPending: rank.isPending,
+      isFulfilled: rank.isFulfilled,
+      error: rank.error,
+    },
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({...SubmissionAction, ...ProblemRecommendationAction}, dispatch);
+  return bindActionCreators({...SubmissionAction, ...ProblemRecommendationAction, ...RankAction}, dispatch);
 }
 
 User.propTypes = {
@@ -120,6 +192,21 @@ User.propTypes = {
     isFulfilled: PropTypes.bool,
     error: PropTypes.any,
   }),
+  rank: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.int,
+      name: PropTypes.string,
+      username: PropTypes.string,
+      acceptedProblem: PropTypes.int,
+      acceptedSubmission: PropTypes.int,
+      totalSubmission: PropTypes.int,
+    })).isRequired,
+    above: PropTypes.int,
+    below: PropTypes.int,
+    isPending: PropTypes.bool,
+    isFulfilled: PropTypes.bool,
+    error: PropTypes.any,
+  }),
   userData: PropTypes.shape({
     id: PropTypes.int,
     username: PropTypes.string,
@@ -127,11 +214,15 @@ User.propTypes = {
     acceptedSubmission: PropTypes.int,
     totalSubmission: PropTypes.int,
     acceptedProblem: PropTypes.int,
+    rank: PropTypes.int,
   }),
   getSubmissions: PropTypes.func.isRequired,
   setSubmissionLimit: PropTypes.func.isRequired,
   getRecommendations: PropTypes.func.isRequired,
   setRecommendationLimit: PropTypes.func.isRequired,
+  getRanks: PropTypes.func.isRequired,
+  setRankAbove: PropTypes.func.isRequired,
+  setRankBelow: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(User, s));
+export default withStyles(connect(mapStateToProps, mapDispatchToProps)(User), s);

@@ -5,7 +5,7 @@ import clone from 'clone';
 const defaultState = {
   submission: {
     data: [],
-    limit: 5,
+    limit: 10,
     isPolling: false,
     isShown: true,
     isPending: true,
