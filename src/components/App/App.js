@@ -57,7 +57,7 @@ class App extends Component {
     return !this.props.error ? (
       <div>
         <Header />
-        <LiveSubmission />
+        <LiveSubmission className={s.liveSubmission}/>
         {this.props.children}
         <Footer />
       </div>

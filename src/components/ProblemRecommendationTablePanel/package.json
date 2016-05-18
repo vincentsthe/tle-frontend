@@ -1,0 +1,6 @@
+{
+  "name": "ProblemRecommendationTablePanel",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ProblemRecommendationTablePanel.js"
+}

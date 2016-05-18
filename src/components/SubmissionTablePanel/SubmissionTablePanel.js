@@ -24,8 +24,8 @@ function SubmissionTablePanel({ className, userId, title, visibilityToggle, limi
   }
 
   return (
-    <div className={cx(s.root, className)}>
-      <div className={s.container}>
+    <div className={s.root}>
+      <div className={cx(s.container, className)}>
         {visibilityToggleButton}
         <Panel collapsible expanded={submission.isShown}>
           <Row>
@@ -71,7 +71,7 @@ SubmissionTablePanel.propTypes = {
   }),
   getSubmissions: PropTypes.func.isRequired,
   setSubmissionLimit: PropTypes.func.isRequired,
-  setSubmissionShown: PropTypes.func.isRequired,
+  setSubmissionShown: PropTypes.func,
 };
 
 export default withStyles(SubmissionTablePanel, s);

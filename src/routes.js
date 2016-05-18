@@ -17,12 +17,15 @@ import ErrorPage from './components/ErrorPage';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
+// import createLogger from 'redux-logger';
 import promiseMiddleware from 'redux-promise-middleware';
 import tleApp from './reducers';
 
-const loggerMiddleware = createLogger();
-const store = createStore(tleApp, applyMiddleware(promiseMiddleware(), loggerMiddleware));
+// const loggerMiddleware = createLogger();
+const store = createStore(tleApp, applyMiddleware(
+  promiseMiddleware(),
+  // loggerMiddleware,
+));
 
 const routes = [
   require('./routes/home'),

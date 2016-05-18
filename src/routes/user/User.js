@@ -8,10 +8,18 @@ import s from './User.scss';
 import SubmissionTablePanel from '../../components/SubmissionTablePanel';
 import * as SubmissionAction from '../../actions/userSubmissionAction';
 
-function User({ submission, getSubmissions, setSubmissionLimit, userData }) {
+import ProblemRecommendationTablePanel from '../../components/ProblemRecommendationTablePanel';
+import * as ProblemRecommendationAction from '../../actions/problemRecommendationAction';
+
+function User({
+  submission, getSubmissions, setSubmissionLimit,
+  recommendation, getRecommendations, setRecommendationLimit,
+  userData }) {
+
   const { id, name, acceptedSubmission, totalSubmission, acceptedProblem } = userData;
   const userName = userData.username;
   const submissionLimits = [5, 10, 25, 50, 100];
+  const recommendationLimits = [25, 50, 100];
 
   return (typeof name !== 'undefined') ? (
     <div className={s.root}>
@@ -23,16 +31,26 @@ function User({ submission, getSubmissions, setSubmissionLimit, userData }) {
           <div className={s.stat}>Accepted Problems: {acceptedProblem}</div>
         </div>
         <div className={s.submissionTable}>
-            <SubmissionTablePanel
-              title="Last Submissions"
-              isPolling={false}
-              submission={submission}
-              limits={submissionLimits}
-              getSubmissions={getSubmissions}
-              setSubmissionLimit={setSubmissionLimit}
-              setSubmissionShown={null}
-              userId={id}
-            />
+          <SubmissionTablePanel
+            title="Last Submissions"
+            isPolling={false}
+            submission={submission}
+            limits={submissionLimits}
+            getSubmissions={getSubmissions}
+            setSubmissionLimit={setSubmissionLimit}
+            setSubmissionShown={null}
+            userId={id}
+          />
+        </div>
+        <div className={s.problemRecommendationTable}>
+          <ProblemRecommendationTablePanel
+            title="Next Problems to Solve"
+            recommendation={recommendation}
+            limits={recommendationLimits}
+            getRecommendations={getRecommendations}
+            setRecommendationLimit={setRecommendationLimit}
+            userId={id}
+          />
         </div>
       </div>
     </div>
@@ -48,6 +66,7 @@ function User({ submission, getSubmissions, setSubmissionLimit, userData }) {
 
 function mapStateToProps(state) {
   const { submission } = state.userSubmission;
+  const { recommendation } = state.problemRecommendation;
   return {
     submission: {
       data: submission.data,
@@ -58,11 +77,18 @@ function mapStateToProps(state) {
       isFulfilled: submission.isFulfilled,
       error: submission.error,
     },
+    recommendation: {
+      data: recommendation.data,
+      limit: recommendation.limit,
+      isPending: recommendation.isPending,
+      isFulfilled: recommendation.isFulfilled,
+      error: recommendation.error,
+    }
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(SubmissionAction, dispatch);
+  return bindActionCreators({...SubmissionAction, ...ProblemRecommendationAction}, dispatch);
 }
 
 User.propTypes = {
@@ -81,6 +107,19 @@ User.propTypes = {
     isFulfilled: PropTypes.bool,
     error: PropTypes.any,
   }),
+  recommendation: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({
+      slug: PropTypes.string,
+      acceptedUser: PropTypes.int,
+      acceptedSubmission: PropTypes.int,
+      totalSubmission: PropTypes.int,
+      url: PropTypes.string,
+    })).isRequired,
+    limit: PropTypes.int,
+    isPending: PropTypes.bool,
+    isFulfilled: PropTypes.bool,
+    error: PropTypes.any,
+  }),
   userData: PropTypes.shape({
     id: PropTypes.int,
     username: PropTypes.string,
@@ -91,6 +130,8 @@ User.propTypes = {
   }),
   getSubmissions: PropTypes.func.isRequired,
   setSubmissionLimit: PropTypes.func.isRequired,
+  getRecommendations: PropTypes.func.isRequired,
+  setRecommendationLimit: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(User, s));
