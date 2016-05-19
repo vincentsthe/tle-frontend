@@ -1,4 +1,4 @@
-import { GET_SUBMISSIONS, SET_STATE, SET_USER_NAME, SET_SUBMISSION_SHOWN, SET_SUBMISSION_LIMIT } from '../actions/userSubmissionAction';
+import { GET_SUBMISSIONS, SET_USER_NAME, SET_SUBMISSION_SHOWN, SET_SUBMISSION_LIMIT } from '../actions/userSubmissionAction';
 import clone from 'clone';
 
 
@@ -15,7 +15,7 @@ const defaultState = {
   userName: '',
 };
 
-const setState = (state, newState) => state.merge(newState);
+// const setState = (state, newState) => state.merge(newState);
 
 const userSubmission = (state = defaultState, action) => {
   const newState = clone(state);
@@ -34,8 +34,6 @@ const userSubmission = (state = defaultState, action) => {
       newState.submission.isPending = false;
       newState.submission.error = action.payload;
       return newState;
-    case SET_STATE:
-      return setState(state, action.state);
     case SET_USER_NAME:
       newState.userName = action.payload;
       return newState;

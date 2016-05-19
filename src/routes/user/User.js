@@ -13,7 +13,7 @@ import ProblemRecommendationTablePanel from '../../components/ProblemRecommendat
 import * as ProblemRecommendationAction from '../../actions/problemRecommendationAction';
 
 import RankTablePanel from '../../components/RankTablePanel';
-import * as RankAction from '../../actions/rankAction';
+import * as UserRankAction from '../../actions/userRankAction';
 
 function User({
   submission, getSubmissions, setSubmissionLimit,
@@ -130,7 +130,7 @@ function User({
 function mapStateToProps(state) {
   const { submission } = state.userSubmission;
   const { recommendation } = state.problemRecommendation;
-  const { rank } = state.rank;
+  const { rank } = state.userRank;
   return {
     submission: {
       data: submission.data,
@@ -160,7 +160,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({...SubmissionAction, ...ProblemRecommendationAction, ...RankAction}, dispatch);
+  return bindActionCreators({...SubmissionAction, ...ProblemRecommendationAction, ...UserRankAction}, dispatch);
 }
 
 User.propTypes = {

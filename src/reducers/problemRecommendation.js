@@ -1,4 +1,4 @@
-import { GET_PROBLEM_RECOMMENDATIONS, SET_STATE, SET_USER_NAME, SET_PROBLEM_RECOMMENDATION_LIMIT } from '../actions/problemRecommendationAction';
+import { GET_PROBLEM_RECOMMENDATIONS, SET_USER_NAME, SET_PROBLEM_RECOMMENDATION_LIMIT } from '../actions/problemRecommendationAction';
 import clone from 'clone';
 
 
@@ -12,8 +12,6 @@ const defaultState = {
   },
   userName: '',
 };
-
-const setState = (state, newState) => state.merge(newState);
 
 const problemRecommendation = (state = defaultState, action) => {
   const newState = clone(state);
@@ -32,8 +30,6 @@ const problemRecommendation = (state = defaultState, action) => {
       newState.recommendation.isPending = false;
       newState.recommendation.error = action.payload;
       return newState;
-    case SET_STATE:
-      return setState(state, action.state);
     case SET_USER_NAME:
       newState.userName = action.payload;
       return newState;

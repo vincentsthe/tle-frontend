@@ -1,4 +1,4 @@
-import { GET_RANKS, SET_STATE, SET_USER_NAME, SET_RANK_ABOVE, SET_RANK_BELOW } from '../actions/rankAction';
+import { GET_USER_RANKS, SET_USER_RANK_ABOVE, SET_USER_RANK_BELOW } from '../actions/userRankAction';
 import clone from 'clone';
 
 
@@ -11,37 +11,29 @@ const defaultState = {
     isFulfilled: false,
     error: false,
   },
-  userName: '',
 };
 
-const setState = (state, newState) => state.merge(newState);
-
-const rank = (state = defaultState, action) => {
+const userRank = (state = defaultState, action) => {
   const newState = clone(state);
   switch (action.type) {
-    case `${GET_RANKS}_PENDING`:
+    case `${GET_USER_RANKS}_PENDING`:
       newState.rank.isPending = true;
 
       return newState;
-    case `${GET_RANKS}_FULFILLED`:
+    case `${GET_USER_RANKS}_FULFILLED`:
       newState.rank.isPending = false;
       newState.rank.isFulfilled = true;
       newState.rank.error = false;
       newState.rank.data = action.payload.data;
       return newState;
-    case `${GET_RANKS}_REJECTED`:
+    case `${GET_USER_RANKS}_REJECTED`:
       newState.rank.isPending = false;
       newState.rank.error = action.payload;
       return newState;
-    case SET_USER_NAME:
-      newState.userName = action.payload;
-      return newState;
-    case SET_STATE:
-      return setState(state, action.state);
-    case SET_RANK_ABOVE:
+    case SET_USER_RANK_ABOVE:
       newState.rank.above = action.payload;
       return newState;
-    case SET_RANK_BELOW:
+    case SET_USER_RANK_BELOW:
       newState.rank.below = action.payload;
       return newState;
     default:
@@ -49,4 +41,4 @@ const rank = (state = defaultState, action) => {
   }
 };
 
-export default rank;
+export default userRank;

@@ -23,7 +23,7 @@ class RankTable extends Component {
     const { data, isPending } = this.props.rank;
     const { start, userId } = this.props.apiParams;
     if (data.length > 0) {
-      let key = start;
+      let key = start - 1;
       return (
         data.map(row => {
           key++;

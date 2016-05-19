@@ -11,11 +11,25 @@ import RadioButtons from '../../components/RadioButtons';
 function RankTablePanel({ className, userId, userRank, title, limits, rank, getRanks, setRankAbove, setRankBelow }) {
   const apiParams = {
     start: userRank - rank.below,
-    limit: rank.above + rank.below + 1,
+    limit: rank.above + rank.below + (userId ? 1 : 0),
   };
 
   if (typeof userId !== 'undefined') {
     apiParams.userId = userId;
+  }
+
+  let belowButtons = '';
+  if (typeof setRankBelow === 'function') {
+    belowButtons = <RadioButtons className={s.belowButtons} label="BELOW:" items={limits} active={rank.below} onChange={setRankBelow} />;
+  }
+
+  let aboveButtons = '';
+  let aboveLabel = 'ABOVE:';
+  if (typeof setRankAbove === 'function') {
+    if (typeof setRankBelow !== 'function') {
+      aboveLabel = 'TOP';
+    }
+    aboveButtons = <RadioButtons className={s.aboveButtons} label={aboveLabel} items={limits} active={rank.above} onChange={setRankAbove} />;
   }
 
   return (
@@ -27,8 +41,8 @@ function RankTablePanel({ className, userId, userRank, title, limits, rank, getR
               <h2 className={s.title}>{title}</h2>
             </Col>
             <Col xs={12} sm={8}>
-              <RadioButtons className={s.aboveButtons} label="ABOVE:" items={limits} active={rank.above} onChange={setRankAbove} />
-              <RadioButtons className={s.belowButtons} label="BELOW:" items={limits} active={rank.below} onChange={setRankBelow} />
+              {belowButtons}
+              {aboveButtons}
             </Col>
           </Row>
           <Row>
@@ -63,8 +77,8 @@ RankTablePanel.propTypes = {
     error: PropTypes.any,
   }),
   getRanks: PropTypes.func.isRequired,
-  setRankAbove: PropTypes.func.isRequired,
-  setRankBelow: PropTypes.func.isRequired,
+  setRankAbove: PropTypes.func,
+  setRankBelow: PropTypes.func,
 };
 
 export default withStyles(RankTablePanel, s);
