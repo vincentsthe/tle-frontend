@@ -17,12 +17,20 @@
  * Base styles
  * ========================================================================== */
 
+* {
+  margin: 0;
+}
+
 html {
   color: #222;
   font-weight: 100;
   font-size: 1em; /* ~16px; */
   font-family: $font-family-base;
   line-height: 1.375; /* ~22px */
+}
+
+html, body {
+  height: 100%;
 }
 
 /*
@@ -173,6 +181,21 @@ textarea {
   h2,
   h3 {
     page-break-after: avoid;
+  }
+}
+
+.root {
+  height: 100%;
+}
+
+.pageWrap {
+  min-height: 100%;
+  margin-bottom: -$footer-height;
+
+  &:after {
+    content: "";
+    display: block;
+    height: $footer-height;
   }
 }
 

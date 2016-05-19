@@ -55,10 +55,12 @@ class App extends Component {
 
   render() {
     return !this.props.error ? (
-      <div>
-        <Header />
-        <LiveSubmission className={s.liveSubmission}/>
-        {this.props.children}
+      <div className={s.root}>
+        <div className={s.pageWrap}>
+          <Header />
+          <LiveSubmission className={s.liveSubmission}/>
+          {this.props.children}
+        </div>
         <Footer />
       </div>
     ) : this.props.children;
